@@ -5,7 +5,6 @@ export const env = {
   CLIENT_URL: "http://localhost:4200",
   IP_URL: "http://127.0.0.1:4200",
   PORT: 3000,
-  // MONGO_URI: "mongodb+srv://Baajaa:8nTdgmxF3SAx91R7@cluster0.8wfis.mongodb.net/MyLifeProject?retryWrites=true&w=majority",
   MONGO_URI: "mongodb+srv://Baajaa:c75Vw6LQ6WBLQsbo@cluster0.xxex5.mongodb.net/dataBaseName?retryWrites=true&w=majority",
   DATABASE_NAME: "dataBaseName",
   collection_users: "users",
