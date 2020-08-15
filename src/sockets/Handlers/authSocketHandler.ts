@@ -1,16 +1,15 @@
 import { CustomSocket } from "../core/customSocket";
 import { Events } from "../core/events";
-import { User, IMember } from "../../models/userModel";
+import { User, IUser } from "../../models/userModel";
 import { MongoHelper } from "../../mongoHelper";
-import { IUser } from "../../Interfaces/Iuser";
 
 export class AuthSocketHandler {
 
   constructor() { };
 
   public handle(s: CustomSocket) {
-    s.on(Events.LOGIN, (data: IMember) => {
-      let currentMember: IMember = {
+    s.on(Events.LOGIN, (data: any) => {
+      let currentMember: any = {
         email: data.email,
         password: data.password,
       }
@@ -23,7 +22,7 @@ export class AuthSocketHandler {
     return MongoHelper.client.db("MyLifeProject").collection(collectionName);
   }
 
-  public async getAccess(s: CustomSocket, currentMember: IMember) {
+  public async getAccess(s: CustomSocket, currentMember: any) {
     try {
       let collection = this.getCollection("users");
       let user = await collection.findOne({ member: currentMember });
@@ -43,7 +42,7 @@ export class AuthSocketHandler {
   }
 
   public setUser(user: IUser) {
-    User.member = { email: user.member.email, password: user.member.password };
+    // User.member = { email: user.member.email, password: user.member.password };
     User.firstName = user.firstName;
     User.lastName = user.lastName;
     User.connected = true;
