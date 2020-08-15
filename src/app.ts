@@ -30,9 +30,10 @@ export class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(cookieParser());
     this.app.use(cors({
-      origin: [env.CLIENT_URL, env.IP_URL],
+      // origin: [env.CLIENT_URL, env.IP_URL],
       credentials: true
     }))
+
     // this.app.use(express.static(path.join(__dirname, "/dist")));
     this.app.use(express.static(path.join(__dirname, "../src/public")));
     // this.app.set('trust proxy', 1);
