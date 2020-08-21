@@ -3,7 +3,7 @@ import { MongoHelper } from '../mongoHelper';
 import { env } from '../environment';
 
 export class VehicleRentalsController {
-  public path_vehicleRentals = `${env.VEHICLE_RENTALS}/:${env.DATE_RANGE}`;
+  public path_vehicleRentals = `${env.VEHICLE_RENTALS}/:${env.LAT}/:${env.LNG}/:${env.START_DATE}/:${env.END_DATE}`;
   public router = express.Router();
 
   constructor() {
@@ -15,8 +15,10 @@ export class VehicleRentalsController {
   }
 
   public getVehicleList = (req: express.Request, res: express.Response) => {
-    const location = req.params.location;
-    const dateRange = req.params.dateRange;
+    const latitude = req.params.latitude;
+    const longitude = req.params.longitude;
+    const startDate = req.params.startDate;
+    const endDate = req.params.endDate;
     try {
       this.getCollection().find({}).toArray((err, data) => {
         if (err) throw err;

@@ -24,5 +24,8 @@ export const env = {
   // parameters
   ID: "id",
   CITY: "city",
-  DATE_RANGE: "dateRange"
+  LAT: "latitude",
+  LNG: "longitude",
+  START_DATE: "startDate",
+  END_DATE: "endDate",
 };
