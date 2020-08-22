@@ -30,14 +30,14 @@ export class VehicleController {
           (error, result) => {
             if (error) throw new Error("while removing");
             if (result.modifiedCount == 1) {
-              res.status(200).json({ msg: false });
-              console.log(`unfavorite ${vehicleId}`);
+              res.status(200).json({ msg: "removed" });
+              console.log(`remove ${vehicleId} from favorite list`);
             } else {
               this.getCollection(env.collection_users).updateOne(objectUserId, { $push: newData },
                 (error) => {
                   if (error) throw new Error("while adding");
-                  res.status(200).json({ msg: true });
-                  console.log(`favorite ${vehicleId}`);
+                  res.status(200).json({ msg: "added" });
+                  console.log(`add ${vehicleId} to favorite list`);
                 }
               )
             }
