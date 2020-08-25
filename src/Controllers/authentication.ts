@@ -3,6 +3,8 @@ import { IUser } from '../models/userModel';
 import * as express from 'express';
 import { MongoHelper } from '../mongoHelper';
 import { env } from '../environment';
+import * as bcrypt from "bcrypt"
+
 
 export class AuthController {
   public path_ = '/user';
@@ -24,10 +26,10 @@ export class AuthController {
     // console.log(req.session)
     if (req.session?.user) {
       await this.getCollection().findOne({ _id: new ObjectId(req.session.user._id) })
-      .then((result: IUser)=>{
-        req.session!.user = result;
-        res.status(200).json(result);
-      })
+        .then((result: IUser) => {
+          req.session!.user = result;
+          res.status(200).json(result);
+        })
     } else {
       res.status(200).json({ msg: "No user connected yet" });
       console.log("No user connected yet")
@@ -57,20 +59,34 @@ export class AuthController {
   public login = async (req: express.Request, res: express.Response) => {
     try {
       const { email, password } = req.body;
-      if (email && password) {
-        await this.getCollection().findOne({ "email": email, "password": password })
-          .then((result: IUser) => {
-            if (result) {
-              req.session!.user = result;
-              res.status(200).json(result);
-              console.log("login succes");
-            } else throw new Error("Login failed - user not found");
-          })
-      } else throw new Error("missing some fields (login)");
+
+      if (!email || !password) {
+        throw new Error("missing some fields (login)");
+      }
+
+      await this.getCollection().findOne({ "email": email })
+        .then(async (result: IUser) => {
+
+          if (!result) {
+            throw new Error("Login failed - user not found");
+          }
+
+          if (!(await bcrypt.compare(password, result.password))) {
+            throw new Error("Email and password don't match.")
+          }
+
+          req.session!.user = result;
+          res.status(200).json(result);
+          console.log("login succes");
+        })
 
     } catch (err) {
-      res.status(401).json({ msg: err.toString() });
-      console.log(`Error: ${err}`);
+      res.status(401).json({
+        code: 401,
+        msg: err.toString(),
+        data: null
+      });
+      console.log(err);
     }
   }
 

@@ -28,17 +28,23 @@ export class AccountController {
       await this.getCollection(env.collection_users).deleteOne({ _id: new ObjectId(ownerId) });
 
       req.session?.destroy(err => {
+
         if (err) {
           console.log("Error while logging out.")
         }
+
         res.clearCookie("sid") // sessionName
         res.status(200).json({ msg: "Log out successfully" })
         console.log("log out successfully");
       })
 
     } catch (err) {
-      res.status(401).json({ msg: err.toString() });
-      console.log(`Error: ${err}`);
+      res.status(401).json({
+        code: 401,
+        msg: err.toString(),
+        data: null
+      });
+      console.log(err);
     }
   }
 }

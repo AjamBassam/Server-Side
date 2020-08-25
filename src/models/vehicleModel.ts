@@ -2,7 +2,7 @@ export class VehicleModel {
   _id?: string = undefined;
   location: ILocation = undefined!;
   date: string = undefined!;
-  price: number = undefined!;
+  price?: number = undefined!;
   ownerId?: string = undefined;
 }
 

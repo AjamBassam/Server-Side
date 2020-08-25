@@ -27,28 +27,34 @@ export class ListYourVehicleController {
 
   public listYourVehicle = async (req: express.Request, res: express.Response) => {
     try {
-      const { ownerId, date, location, price } = req.body;
       console.log(req.body)
-      if (ownerId && date && location && price) {
-        const vehicle: IVehicle = {
-          location: location,
-          date: date,
-          price: price,
-          ownerId: ownerId
-        }
-        await this.getCollection(env.collection_vehicles).insertOne(vehicle)
-          .then(() => {
-            res.status(200).json({ msg: "Vehicle added" });
-            console.log("Vehicle added");
-          }).catch(() => {
-            throw new Error("error while adding a new vehicle")
-          })
+      const { ownerId, date, location } = req.body;
 
-      } else throw new Error("Missing some field")
+      if (!ownerId || !date || !location) {
+        throw new Error("Missing some field")
+      }
+
+      const vehicle: IVehicle = {
+        location: location,
+        date: date,
+        ownerId: ownerId
+      }
+
+      await this.getCollection(env.collection_vehicles).insertOne(vehicle)
+        .then(() => {
+          res.status(200).json({ msg: "Vehicle added" });
+          console.log("Vehicle added");
+        }).catch(() => {
+          throw new Error("error while adding a new vehicle")
+        })
 
     } catch (err) {
-      res.status(403).json({ msg: err.toString() });
-      console.log(`Error: ${err}`);
+      res.status(403).json({
+        code: 403,
+        msg: err.toString(),
+        data: null
+      });
+      console.log(`${err}`);
     }
   }
 }
