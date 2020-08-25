@@ -4,8 +4,9 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from "cookie-parser";
 import * as cors from "cors";
 import * as http from "http";
-import { SocketHandler } from "./sockets/core/socketHandler";
 import { MongoHelper } from "./mongoHelper";
+import *as mongoose from "mongoose";
+import { SocketHandler } from "./sockets/core/socketHandler";
 import { env } from "./environment";
 import path = require("path");
 
@@ -63,6 +64,7 @@ export class App {
       try {
         await MongoHelper.connect(env.MONGO_URI);
         console.info("connected to mongo.");
+
       } catch (err) {
         console.error(err);
       }

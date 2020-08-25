@@ -20,34 +20,52 @@ export class VehicleController {
 
   public updateFavorite = (req: express.Request, res: express.Response) => {
     try {
-      const { _id: vehicleId } = req.body;
+      console.log(req.body)
+      const { vehicle } = req.body;
       const userId = req.session?.user._id;
+
+      if (!userId) {
+        throw new Error("you have to connect first");
+      }
+
       if (userId) {
         let objectUserId = { _id: new ObjectId(userId) };
-        let newData = { favorites: vehicleId };
+        let newData = { favorites: vehicle };
 
         this.getCollection(env.collection_users).updateOne(objectUserId, { $pull: newData },
           (error, result) => {
-            if (error) throw new Error("while removing");
+
+            if (error) {
+              throw new Error("while removing");
+            }
+
             if (result.modifiedCount == 1) {
               res.status(200).json({ msg: "removed" });
-              console.log(`remove ${vehicleId} from favorite list`);
+              console.log(`remove ${vehicle._id} from favorite list`);
             } else {
               this.getCollection(env.collection_users).updateOne(objectUserId, { $push: newData },
                 (error) => {
-                  if (error) throw new Error("while adding");
+
+                  if (error) {
+                    throw new Error("while adding");
+                  }
+
                   res.status(200).json({ msg: "added" });
-                  console.log(`add ${vehicleId} to favorite list`);
+                  console.log(`add ${vehicle._id} to favorite list`);
                 }
               )
             }
           }
         )
-      } else throw new Error("you have to connect first");
+      }
 
     } catch (err) {
-      res.status(403).json({ msg: err.toString() });
-      console.log(`Error: ${err}`);
+      res.status(403).json({
+        code: 403,
+        msg: err.toString(),
+        data: null
+      });
+      console.log(err);
     }
   }
 

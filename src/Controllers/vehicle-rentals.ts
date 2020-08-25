@@ -26,7 +26,11 @@ export class VehicleRentalsController {
         res.status(200).json(data);
       })
     } catch (err) {
-      res.status(400).json({ msg: "Get vehicle failed" });
+      res.status(400).json({
+        code: 400,
+        msg: "Get vehicle failed",
+        data: null
+      });
       console.log(err);
     }
   }
