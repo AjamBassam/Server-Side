@@ -10,12 +10,14 @@ export class AuthController {
   public path_ = '/user';
   public path_login = '/login';
   public path_logout = '/logout';
+  public path_socialLogin = '/social-login';
   public router = express.Router();
 
   constructor() {
     this.router.post(this.path_, this.sendCurrentUser);
     this.router.post(this.path_login, this.loginMiddleware, this.login);
     this.router.post(this.path_logout, this.logoutMiddleware, this.logout);
+    this.router.post(this.path_socialLogin, this.loginMiddleware, this.socialLogin);
   }
 
   public getCollection = () => {
@@ -100,4 +102,10 @@ export class AuthController {
       console.log("log out successfully");
     })
   }
+
+  public socialLogin = (req: express.Request, res: express.Response) => {
+    console.log(req.body);
+    const { idToken } = req.body;
+  }
+
 }
