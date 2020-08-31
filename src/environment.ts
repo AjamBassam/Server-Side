@@ -2,8 +2,8 @@ const vehicle = "vehicle";
 
 export const env = {
   // configurations
-  CLIENT_URL: "http://localhost:4200",
-  IP_URL: "http://127.0.0.1:4200",
+  CLIENT_URL: "http://localhost:8080",
+  IP_URL: "http://127.0.0.1:8080",
   PORT: 3000,
   MONGO_URI: "mongodb+srv://Baajaa:c75Vw6LQ6WBLQsbo@cluster0.xxex5.mongodb.net/dataBaseName?retryWrites=true&w=majority",
   DATABASE_NAME: "dataBaseName",
